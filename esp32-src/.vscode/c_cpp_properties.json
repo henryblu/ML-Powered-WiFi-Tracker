@@ -8,8 +8,8 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/ml-powered-wifi-tracker/include",
-                "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/ml-powered-wifi-tracker/src",
+                "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/esp32-src/include",
+                "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/esp32-src/src",
                 "C:/Users/HBhenry/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                 "C:/Users/HBhenry/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                 "C:/Users/HBhenry/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
@@ -247,8 +247,8 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/ml-powered-wifi-tracker/include",
-                    "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/ml-powered-wifi-tracker/src",
+                    "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/esp32-src/include",
+                    "C:/Users/HBhenry/OneDrive - Teknologian Tutkimuskeskus VTT/Documents/University Documents/ML-Powered-WiFi-Tracker/esp32-src/src",
                     "C:/Users/HBhenry/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                     "C:/Users/HBhenry/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                     "C:/Users/HBhenry/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
