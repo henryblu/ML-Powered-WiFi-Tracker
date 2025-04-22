@@ -1,18 +1,15 @@
 ## 🛠 Project Configuration (ESP32‑S3 DevKitC‑1 N16R8)
 
-This project is built using [PlatformIO](https://platformio.org/) in Visual Studio Code, targeting the **Diymore ESP32‑S3 DevKitC‑1 N16R8** board (16 MB flash / 8 MB PSRAM).
+This project is built using [PlatformIO](https://platformio.org/) in Visual Studio Code, targeting the **Diymore ESP32‑S3 DevKitC‑1 N16R8** board (16 MB flash / 8 MB PSRAM) however the actual code of this is IDE agnostic, meaning the .imi (and src code) can be used in any arduino IDE.
 
 ### Folder Structure
 
 ```
 .
-├── .pio/                 # PlatformIO build output
-├── .vscode/             # VS Code settings
 ├── boards/              # Custom board definition for ESP32-S3 N16R8
 ├── include/             # Header files
 ├── lib/                 # External libraries
 ├── src/                 # Main source code (e.g. main.cpp)
-├── test/                # PlatformIO test files
 └── platformio.ini       # Project configuration
 ```
 
