@@ -40,7 +40,7 @@ This board (N16R8) was not listed by default in PlatformIO. A custom board manif
 
 First try both ports on the esp32r32-s3 devkitc-1 n16r8v board. 
 
-If this dosn't work, the ESP32‑S3 sometimes requires manual intervention to enter bootloader mode:
+If this doesn't work, the ESP32‑S3 sometimes requires manual intervention to enter bootloader mode:
 
 1. Connect the board via USB.
 2. **Hold the `BOOT` button** on the board.
@@ -50,4 +50,4 @@ If this dosn't work, the ESP32‑S3 sometimes requires manual intervention to en
    ```
 4. Release `BOOT` once uploading begins.
 
-If this dosn't work, try the follo
+If this doesn't work, try the follo
