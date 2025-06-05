@@ -28,7 +28,7 @@ TEST_CASE("time_set sets flag and timestamps increase", "[time]")
     TEST_ASSERT_TRUE(t2 > t1);
 }
 
-void app_main(void)
+extern "C" void app_main(void)
 {
     UNITY_BEGIN();
     unity_run_all_tests();
