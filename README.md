@@ -43,3 +43,20 @@ idf.py -p "$ESPPORT" flash monitor
 ## Changing the WiFi channel
 
 The default channel is configured through the `WIFI_CHANNEL` value. You can change it either in `main/main.cc` or by modifying the `CONFIG_WIFI_CHANNEL` setting in `sdkconfig`.
+
+## ESP32-CSI-Tool components
+
+This project reuses helper components from the [ESP32-CSI-Tool](https://github.com/StevenMHernandez/ESP32-CSI-Tool) repository. The required header files are included in the `_components` directory. If you need to update or re-fetch these files, clone the CSI tool repository and copy its `_components` folder into the root of this project:
+
+```bash
+git clone https://github.com/StevenMHernandez/ESP32-CSI-Tool.git
+cp -r ESP32-CSI-Tool/_components .
+```
+
+Alternatively you can track the dependency using a git submodule:
+
+```bash
+git submodule add https://github.com/StevenMHernandez/ESP32-CSI-Tool.git external/ESP32-CSI-Tool
+```
+
+The headers provide the implementations for `nvs_component`, `sd_component`, `csi_component`, `time_component`, and `input_component` used by `main/main.cc`.

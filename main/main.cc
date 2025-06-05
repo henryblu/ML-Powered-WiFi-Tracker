@@ -10,11 +10,11 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 
-#include "../../_components/nvs_component.h"
-#include "../../_components/sd_component.h"
-#include "../../_components/csi_component.h"
-#include "../../_components/time_component.h"
-#include "../../_components/input_component.h"
+#include "../_components/nvs_component.h"
+#include "../_components/sd_component.h"
+#include "../_components/csi_component.h"
+#include "../_components/time_component.h"
+#include "../_components/input_component.h"
 
 #ifdef CONFIG_WIFI_CHANNEL
 #define WIFI_CHANNEL CONFIG_WIFI_CHANNEL

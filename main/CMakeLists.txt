@@ -1,3 +1,4 @@
 idf_component_register(
-        SRCS main.cc
-        INCLUDE_DIRS "")
+    SRCS main.cc
+    INCLUDE_DIRS "../_components"
+)
