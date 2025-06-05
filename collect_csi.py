@@ -14,11 +14,15 @@ try:
         writer = csv.writer(csv_file)
         writer.writerow(['Raw CSI Data'])  # CSV Header
 
+        last_line = None
+
         while True:
             try:
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 if "CSI_DATA" in line:
-                    print(line)  # Optional: view in console
+                    if line != last_line:
+                        print(line)
+                        last_line = line
                     writer.writerow([line])
             except KeyboardInterrupt:
                 print("\nStopped by user.")
