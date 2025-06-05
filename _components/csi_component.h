@@ -5,6 +5,7 @@
 #include "math.h"
 #include <sstream>
 #include <iostream>
+#include <freertos/semphr.h>
 
 char *project_type;
 

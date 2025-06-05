@@ -2,6 +2,7 @@
 #define ESP32_CSI_TIME_COMPONENT_H
 
 #include <chrono>
+#include <sys/time.h>
 
 static char *SET_TIMESTAMP_SIMPLE_TEMPLATE = (char *) "%li.%li";
 static char *SET_TIMESTAMP_TEMPLATE = (char *) "SETTIME: %li.%li";
