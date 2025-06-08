@@ -8,3 +8,5 @@ build/
 *.elf
 *.bin
 sdkconfig*
+Findings_1.csv
+.DS_store
