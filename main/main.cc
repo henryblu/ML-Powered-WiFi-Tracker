@@ -74,8 +74,9 @@ void passive_init() {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_NULL));
     ESP_ERROR_CHECK(esp_wifi_start());
 
+    // Capture CSI from all WiFi frame types to maximize sample rate
     const wifi_promiscuous_filter_t filt = {
-            .filter_mask = WIFI_PROMIS_FILTER_MASK_DATA
+            .filter_mask = WIFI_PROMIS_FILTER_MASK_ALL
     };
 
     int curChannel = WIFI_CHANNEL;
