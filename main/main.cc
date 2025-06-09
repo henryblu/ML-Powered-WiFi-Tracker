@@ -91,6 +91,6 @@ extern "C" void app_main(void) {
     nvs_init();
     sd_init();
     passive_init();
-    csi_init((char *) "PASSIVE");
+    csi_init((char *)CONFIG_DEVICE_ID);
     input_loop();
 }

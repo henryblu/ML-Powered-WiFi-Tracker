@@ -50,9 +50,19 @@ idf.py -p "$ESPPORT" flash monitor
 
 The default channel is configured through the `WIFI_CHANNEL` value. You can change it either in `main/main.cc` or by modifying the `CONFIG_WIFI_CHANNEL` setting in `sdkconfig`.
 
+## Device ID
+
+Each board should be built with a unique identifier using the `CONFIG_DEVICE_ID` option. Run `idf.py menuconfig` and set a different string for every device so CSI data can be traced back to the correct board.
+
 ## Capturing additional frame types
 
 `main/main.cc` configures the ESP32 in promiscuous mode. By default the firmware only listened for data frames, which limited how often CSI callbacks were triggered. The code now enables `WIFI_PROMIS_FILTER_MASK_ALL` so CSI is reported for management and control frames as well. This increases the CSI sampling rate when there is little data traffic on the monitored channel.
+
+## Capturing the full CSI payload
+
+By default, only the legacy long training field (LLTF) is stored for each packet. To include the high throughput long training field (HT-LTF) and obtain more data per packet, set `CONFIG_SHOULD_COLLECT_ONLY_LLTF` to `n` using `idf.py menuconfig` or by editing `sdkconfig` directly.
+
+Note that printing the full CSI over serial can reduce the effective sampling rate if the serial link becomes saturated.
 
 ## ESP32-CSI-Tool components
 
