@@ -2,13 +2,13 @@ menu "Example Configuration"
 
     config EXAMPLE_WIFI_SSID
         string "WiFi SSID"
-        default "myssid"
+        default "Matrix"
         help
             SSID (network name) for the example to connect to.
 
     config EXAMPLE_WIFI_PASSWORD
         string "WiFi Password"
-        default "mypassword"
+        default "0bivss6yh18k5"
         help
             WiFi password (WPA or WPA2) for the example to use.
 
