@@ -80,3 +80,15 @@ git submodule add https://github.com/StevenMHernandez/ESP32-CSI-Tool.git externa
 ```
 
 The headers provide the implementations for `nvs_component`, `sd_component`, `csi_component`, `time_component`, and `input_component` used by `main/main.cc`.
+
+## Collecting CSI from multiple devices
+
+Use `collect_multi_csi.py` to read CSI data from several ESP32 boards at once. Each device is specified as an `ID:PORT` pair. Lines from all devices are saved to one CSV file and are prefixed with the given ID.
+
+Example:
+
+```bash
+python3 collect_multi_csi.py --device STA1:/dev/ttyUSB0 --device STA2:/dev/ttyUSB1 --output csi_log.csv
+```
+
+
