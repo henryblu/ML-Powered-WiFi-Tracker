@@ -33,7 +33,9 @@ export ESPPORT=/dev/ttyUSB0  # or COMx on Windows
 
 If your ESP32 board has two USB-C ports, connect to the **left** port for
 flashing and monitoring. The right port is typically for USB-OTG and does not
-provide the USB-to-serial connection used by `idf.py`.
+provide the USB-to-serial connection used by `idf.py`. Using the wrong port
+can result in null responces when monitoring the device or trying to pull
+the csi information. 
 
 ## Build and flash
 
