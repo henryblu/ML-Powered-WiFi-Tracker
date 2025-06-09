@@ -50,6 +50,10 @@ idf.py -p "$ESPPORT" flash monitor
 
 The default channel is configured through the `WIFI_CHANNEL` value. You can change it either in `main/main.cc` or by modifying the `CONFIG_WIFI_CHANNEL` setting in `sdkconfig`.
 
+## Device ID
+
+Each board should be built with a unique identifier using the `CONFIG_DEVICE_ID` option. Run `idf.py menuconfig` and set a different string for every device so CSI data can be traced back to the correct board.
+
 ## ESP32-CSI-Tool components
 
 This project reuses helper components from the [ESP32-CSI-Tool](https://github.com/StevenMHernandez/ESP32-CSI-Tool) repository. The required header files are included in the `_components` directory. If you need to update or re-fetch these files, clone the CSI tool repository and copy its `_components` folder into the root of this project:
