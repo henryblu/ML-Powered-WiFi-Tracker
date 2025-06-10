@@ -91,6 +91,10 @@ However, it is recommended to Enable `y` if:
    
 Note that printing the full CSI over serial can reduce the effective sampling rate if the serial link becomes saturated.
 
+## CSI output fields
+
+Each logged line begins with metadata followed by the CSI payload. The header printed by `_print_csi_csv_header()` lists the fields in order. A `seq_ctrl` column has been added just before the CSI data to store the IEEE 802.11 sequence control value from the received frame.
+
 ## ESP32-CSI-Tool components
 
 This project reuses helper components from the [ESP32-CSI-Tool](https://github.com/StevenMHernandez/ESP32-CSI-Tool) repository. The required header files are included in the `_components` directory. If you need to update or re-fetch these files, clone the CSI tool repository and copy its `_components` folder into the root of this project:
