@@ -54,6 +54,12 @@ The default channel is configured through the `WIFI_CHANNEL` value. You can chan
 
 Each board should be built with a unique identifier using the `CONFIG_DEVICE_ID` option. Run `idf.py menuconfig` and set a different string for every device so CSI data can be traced back to the correct board.
 
+## Device role
+
+Two devices are required for time synchronisation. Select whether the firmware
+should behave as a **MASTER** or **WORKER** using the `CONFIG_DEVICE_ROLE`
+option in `idf.py menuconfig`. The default is **WORKER**.
+
 ## Capturing additional frame types
 
 `main/main.cc` configures the ESP32 in promiscuous mode. By default the firmware only listened for data frames, which limited how often CSI callbacks were triggered. The code now enables `WIFI_PROMIS_FILTER_MASK_ALL` so CSI is reported for management and control frames as well. This increases the CSI sampling rate when there is little data traffic on the monitored channel.
