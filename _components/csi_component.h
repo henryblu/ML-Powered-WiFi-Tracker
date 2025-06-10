@@ -3,12 +3,29 @@
 
 #include "time_component.h"
 #include "sync_component.h"
+#include "esp_wifi.h"
 #include "math.h"
 #include <sstream>
 #include <iostream>
 #include <freertos/semphr.h>
 
 char *project_type;
+volatile uint16_t last_seq_ctrl = 0;
+
+typedef struct {
+    uint16_t frame_ctrl;
+    uint16_t duration_id;
+    uint8_t addr1[6];
+    uint8_t addr2[6];
+    uint8_t addr3[6];
+    uint16_t seq_ctrl;
+} wifi_ieee80211_mac_hdr_t;
+
+static void promiscuous_rx_cb(void *buf, wifi_promiscuous_pkt_type_t type) {
+    wifi_promiscuous_pkt_t *ppkt = (wifi_promiscuous_pkt_t *)buf;
+    wifi_ieee80211_mac_hdr_t *hdr = (wifi_ieee80211_mac_hdr_t *)ppkt->payload;
+    last_seq_ctrl = hdr->seq_ctrl;
+}
 
 #define CSI_RAW 1
 #define CSI_AMPLITUDE 0
@@ -55,7 +72,8 @@ void _wifi_csi_cb(void *ctx, wifi_csi_info_t *data) {
 #elif CONFIG_DEVICE_ROLE_WORKER
        << get_synced_time() << ","
 #endif
-       << data->len << ",[";
+       << data->len << ","
+       << last_seq_ctrl << ",[";
 
 #if CONFIG_SHOULD_COLLECT_ONLY_LLTF
     int data_len = 128;
@@ -91,7 +109,7 @@ int8_t *my_ptr;
 }
 
 void _print_csi_csv_header() {
-    char *header_str = (char *) "type,role,mac,rssi,rate,sig_mode,mcs,bandwidth,smoothing,not_sounding,aggregation,stbc,fec_coding,sgi,noise_floor,ampdu_cnt,channel,secondary_channel,local_timestamp,ant,sig_len,rx_state,real_time_set,real_timestamp,len,CSI_DATA\n";
+    char *header_str = (char *) "type,role,mac,rssi,rate,sig_mode,mcs,bandwidth,smoothing,not_sounding,aggregation,stbc,fec_coding,sgi,noise_floor,ampdu_cnt,channel,secondary_channel,local_timestamp,ant,sig_len,rx_state,real_time_set,real_timestamp,len,seq_ctrl,CSI_DATA\n";
     outprintf(header_str);
 }
 

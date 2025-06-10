@@ -83,6 +83,7 @@ void passive_init() {
     int curChannel = WIFI_CHANNEL;
 
     esp_wifi_set_promiscuous(true);
+    esp_wifi_set_promiscuous_rx_cb(promiscuous_rx_cb);
     esp_wifi_set_promiscuous_filter(&filt);
     esp_wifi_set_channel(curChannel, WIFI_SECOND_CHAN_NONE);
 }
