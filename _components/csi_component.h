@@ -2,6 +2,7 @@
 #define ESP32_CSI_CSI_COMPONENT_H
 
 #include "time_component.h"
+#include "sync_component.h"
 #include "math.h"
 #include <sstream>
 #include <iostream>
@@ -49,7 +50,11 @@ void _wifi_csi_cb(void *ctx, wifi_csi_info_t *data) {
        << d.rx_ctrl.sig_len << ","
        << d.rx_ctrl.rx_state << ","
        << real_time_set << ","
+#if CONFIG_DEVICE_ROLE_MASTER
        << get_steady_clock_timestamp() << ","
+#elif CONFIG_DEVICE_ROLE_WORKER
+       << get_synced_time() << ","
+#endif
        << data->len << ",[";
 
 #if CONFIG_SHOULD_COLLECT_ONLY_LLTF
