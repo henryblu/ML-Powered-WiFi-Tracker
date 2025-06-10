@@ -6,6 +6,7 @@
 #include "esp_timer.h"
 #include "esp_log.h"
 #include <string.h>
+#include <inttypes.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,7 +40,7 @@ static inline void sync_master_init(void)
     esp_now_peer_info_t peer = {0};
     memcpy(peer.peer_addr, sync_peer_mac, ESP_NOW_ETH_ALEN);
     peer.channel = 0;
-    peer.ifidx = ESP_IF_WIFI_STA;
+    peer.ifidx = WIFI_IF_STA;
     peer.encrypt = false;
     esp_now_add_peer(&peer);
 
@@ -56,7 +57,7 @@ static inline void sync_master_init(void)
 
 static int64_t time_offset = 0;
 
-static void sync_recv_cb(const uint8_t *mac, const uint8_t *data, int len)
+static void sync_recv_cb(const esp_now_recv_info_t *recv_info, const uint8_t *data, int len)
 {
     if (len != sizeof(sync_packet_t)) {
         return;
@@ -65,7 +66,7 @@ static void sync_recv_cb(const uint8_t *mac, const uint8_t *data, int len)
     memcpy(&pkt, data, sizeof(pkt));
     int64_t local_time = esp_timer_get_time();
     time_offset = pkt.timestamp_us - local_time;
-    ESP_LOGI("SYNC_WORKER", "Received seq %u, offset=%lld us", pkt.seq, (long long)time_offset);
+    ESP_LOGI("SYNC_WORKER", "Received seq %" PRIu32 ", offset=%lld us", pkt.seq, (long long)time_offset);
 }
 
 static inline void sync_worker_init(void)
