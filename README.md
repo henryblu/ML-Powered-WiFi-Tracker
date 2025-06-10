@@ -67,7 +67,12 @@ option in `idf.py menuconfig`. The default is **WORKER**.
 ## Capturing the full CSI payload
 
 By default, only the legacy long training field (LLTF) is stored for each packet. To include the high throughput long training field (HT-LTF) and obtain more data per packet, set `CONFIG_SHOULD_COLLECT_ONLY_LLTF` to `n` using `idf.py menuconfig` or by editing `sdkconfig` directly.
-
+i.e. disabling it. 
+However, it is recommended to Enable 'y' if:
+1. You want stable, consistent CSI data without missing samples.
+2. You don’t need MIMO or 40MHz channel analysis.
+3. You want lower bandwidth usage (important for serial/SD logging).
+   
 Note that printing the full CSI over serial can reduce the effective sampling rate if the serial link becomes saturated.
 
 ## ESP32-CSI-Tool components
@@ -86,6 +91,11 @@ git submodule add https://github.com/StevenMHernandez/ESP32-CSI-Tool.git externa
 ```
 
 The headers provide the implementations for `nvs_component`, `sd_component`, `csi_component`, `time_component`, and `input_component` used by `main/main.cc`.
+
+## Modifying the format of CSI 
+Head to the csi_component.h file where _wifi_csi_cb() function caters the pattern of the CSI data. Following modifications can be made according to the application and need: 
+1. Reducing/Adding fields
+2. Choosing CSI Type [There are 3 options available: CSI_RAW, CSI_AMPLITUDE and CSI_PHASE]. The default type is CSI_RAW
 
 ## Collecting CSI from multiple devices
 
