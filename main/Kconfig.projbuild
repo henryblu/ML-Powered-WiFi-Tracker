@@ -12,6 +12,18 @@ menu "ESP32 CSI Tool Config"
         help
             Unique ID string for this device. Use a different value for each board.
 
+    choice DEVICE_ROLE
+        prompt "Device role"
+        default DEVICE_ROLE_WORKER
+        help
+            Select whether this device acts as the time sync master or worker.
+
+        config DEVICE_ROLE_MASTER
+            bool "Master"
+        config DEVICE_ROLE_WORKER
+            bool "Worker"
+    endchoice
+
     config SHOULD_COLLECT_CSI
         bool "Should this ESP32 collect and print CSI data?"
         default "y"
