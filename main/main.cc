@@ -16,6 +16,7 @@
 #include "../_components/csi_component.h"
 #include "../_components/time_component.h"
 #include "../_components/input_component.h"
+#include "../_components/sync_component.h"
 
 #ifdef CONFIG_WIFI_CHANNEL
 #define WIFI_CHANNEL CONFIG_WIFI_CHANNEL
@@ -91,6 +92,13 @@ extern "C" void app_main(void) {
     nvs_init();
     sd_init();
     passive_init();
+
+#if CONFIG_DEVICE_ROLE_MASTER
+    sync_master_init();
+#else
+    sync_worker_init();
+#endif
+
     csi_init((char *)CONFIG_DEVICE_ID);
     input_loop();
 }
