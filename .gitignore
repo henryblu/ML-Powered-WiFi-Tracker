@@ -11,3 +11,4 @@ sdkconfig*
 Findings_1.csv
 .DS_store
 .vscode/settings.json
+data/

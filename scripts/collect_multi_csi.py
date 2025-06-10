@@ -21,7 +21,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="multi_csi.csv",
+        default="../data/multi_csi.csv",
         help="Output CSV file",
     )
     return parser.parse_args()

@@ -1,0 +1,38 @@
+import serial
+import csv
+
+# === Update your serial port and baud rate here ===
+SERIAL_PORT = 'COM7'     # Replace with your actual port
+BAUD_RATE = 921600       # This is standard for ESP32-CSI
+CSV_FILE = '../data/Findings_1.csv'
+
+try:
+    ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+    print(f"Connected to {SERIAL_PORT} at {BAUD_RATE} baud.")
+    
+    with open(CSV_FILE, 'w', newline='', encoding='utf-8') as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(['Raw CSI Data'])  # CSV Header
+
+        last_line = None
+
+        while True:
+            try:
+                line = ser.readline().decode('utf-8', errors='ignore').strip()
+                if "CSI_DATA" in line:
+                    if line != last_line:
+                        print(line)
+                        last_line = line
+                    writer.writerow([line])
+            except KeyboardInterrupt:
+                print("\nStopped by user.")
+                break
+
+except serial.SerialException as e:
+    print(f"Serial error: {e}")
+except Exception as e:
+    print(f"Error: {e}")
+finally:
+    if 'ser' in locals() and ser.is_open:
+        ser.close()
+        print("Serial connection closed.")
