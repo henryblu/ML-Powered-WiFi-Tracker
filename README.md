@@ -56,9 +56,25 @@ Each board should be built with a unique identifier using the `CONFIG_DEVICE_ID`
 
 ## Device role
 
-Two devices are required for time synchronisation. Select whether the firmware
-should behave as a **MASTER** or **WORKER** using the `CONFIG_DEVICE_ROLE`
-option in `idf.py menuconfig`. The default is **WORKER**.
+Time synchronisation relies on two boards. One acts as the **master** and
+broadcasts its clock using ESP-NOW. The other is the **worker** and adjusts its
+local time based on those messages so calls to `get_synced_time()` line up with
+the master's timestamps.
+
+Choose the role for each board in `idf.py menuconfig`:
+
+1. Run `idf.py menuconfig`.
+2. Navigate to **ESP32 CSI Tool Config → Device role**.
+3. Select **Master** or **Worker**.
+
+Build and flash the firmware after setting the role on each board:
+
+```bash
+idf.py -p "$ESPPORT" flash
+```
+
+Reconfigure and re-flash if you later switch a board between master and worker.
+The default role is **Worker**.
 
 ## Capturing additional frame types
 
