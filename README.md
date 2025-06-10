@@ -84,7 +84,7 @@ The default role is **Worker**.
 
 By default, only the legacy long training field (LLTF) is stored for each packet. To include the high throughput long training field (HT-LTF) and obtain more data per packet, set `CONFIG_SHOULD_COLLECT_ONLY_LLTF` to `n` using `idf.py menuconfig` or by editing `sdkconfig` directly.
 i.e. disabling it. 
-However, it is recommended to Enable 'y' if:
+However, it is recommended to Enable `y` if:
 1. You want stable, consistent CSI data without missing samples.
 2. You don’t need MIMO or 40MHz channel analysis.
 3. You want lower bandwidth usage (important for serial/SD logging).
