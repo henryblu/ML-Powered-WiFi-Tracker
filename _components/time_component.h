@@ -38,6 +38,18 @@ static inline double get_system_clock_timestamp() {
     return tv.tv_sec + tv.tv_usec / 1000000.0;
 }
 
+static inline uint64_t get_system_time_us() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (uint64_t)tv.tv_sec * 1000000ULL + tv.tv_usec;
+}
+
+static inline uint64_t get_monotonic_time_us() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (uint64_t)ts.tv_sec * 1000000ULL + ts.tv_nsec / 1000;
+}
+
 static inline double get_steady_clock_timestamp() {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);

@@ -10,8 +10,9 @@ CSV_FILE = '../data/Findings_1.csv'
 HEADERS = [
     "type", "role", "mac", "rssi", "rate", "sig_mode", "mcs", "bandwidth",
     "smoothing", "not_sounding", "aggregation", "stbc", "fec_coding", "sgi",
-    "noise_floor", "ampdu_cnt", "channel", "secondary_channel", "local_timestamp",
-    "ant", "sig_len", "rx_state", "real_time_set", "real_timestamp", "len", "seq_ctrl", "CSI_DATA"
+    "noise_floor", "ampdu_cnt", "channel", "secondary_channel", "timestamp",
+    "phy_timestamp", "ant", "sig_len", "rx_state", "real_time_set", "len",
+    "seq_ctrl", "CSI_DATA"
 ]
 
 try:
