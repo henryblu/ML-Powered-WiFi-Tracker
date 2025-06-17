@@ -61,17 +61,30 @@ void _wifi_csi_cb(void *ctx, wifi_csi_info_t *data) {
        << d.rx_ctrl.noise_floor << ","
        << d.rx_ctrl.ampdu_cnt << ","
        << d.rx_ctrl.channel << ","
-       << d.rx_ctrl.secondary_channel << ","
-       << d.rx_ctrl.timestamp << ","
+       << d.rx_ctrl.secondary_channel << ",";
+
+    uint64_t timestamp_us;
+    if (real_time_set) {
+        timestamp_us = get_system_time_us();
+    } else {
+#if CONFIG_DEVICE_ROLE_MASTER
+        timestamp_us = get_monotonic_time_us();
+#elif CONFIG_DEVICE_ROLE_WORKER
+        timestamp_us = get_synced_time();
+        if (timestamp_us == 0) {
+            timestamp_us = get_monotonic_time_us();
+        }
+#endif
+    }
+
+    uint64_t phy_ts = d.rx_ctrl.timestamp;
+
+    ss << static_cast<unsigned long long>(timestamp_us) << ","
+       << static_cast<unsigned long long>(phy_ts) << ","
        << d.rx_ctrl.ant << ","
        << d.rx_ctrl.sig_len << ","
        << d.rx_ctrl.rx_state << ","
        << real_time_set << ","
-#if CONFIG_DEVICE_ROLE_MASTER
-       << get_steady_clock_timestamp() << ","
-#elif CONFIG_DEVICE_ROLE_WORKER
-       << get_synced_time() << ","
-#endif
        << data->len << ","
        << last_seq_ctrl << ",[";
 
@@ -102,14 +115,16 @@ int8_t *my_ptr;
 #endif
     ss << "]\n";
 
-    printf(ss.str().c_str());
+    std::string out = ss.str();
+    printf("%s", out.c_str());
     fflush(stdout);
     vTaskDelay(0);
     xSemaphoreGive(mutex);
 }
 
 void _print_csi_csv_header() {
-    char *header_str = (char *) "type,role,mac,rssi,rate,sig_mode,mcs,bandwidth,smoothing,not_sounding,aggregation,stbc,fec_coding,sgi,noise_floor,ampdu_cnt,channel,secondary_channel,local_timestamp,ant,sig_len,rx_state,real_time_set,real_timestamp,len,seq_ctrl,CSI_DATA\n";
+    outprintf("# CSV format v2\n");
+    char *header_str = (char *) "type,role,mac,rssi,rate,sig_mode,mcs,bandwidth,smoothing,not_sounding,aggregation,stbc,fec_coding,sgi,noise_floor,ampdu_cnt,channel,secondary_channel,timestamp,phy_timestamp,ant,sig_len,rx_state,real_time_set,len,seq_ctrl,CSI_DATA\n";
     outprintf(header_str);
 }
 

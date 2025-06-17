@@ -72,7 +72,15 @@ def main() -> None:
         with open(args.output, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             # Write header row (adjust columns based on your CSI format)
-            writer.writerow(["device_id", "timestamp", "mac", "rssi", "rate", "sig_mode", "mcs", "bandwidth", "smoothing", "not_sounding", "aggregation", "stbc", "fec_coding", "sgi", "noise_floor", "ampdu_cnt", "channel", "secondary_channel", "local_timestamp", "ant", "sig_len", "rx_state", "real_time_set", "real_timestamp", "len", "seq_ctrl", "csi_data"])
+            writer.writerow([
+                "device_id",
+                "type", "role", "mac", "rssi", "rate", "sig_mode", "mcs",
+                "bandwidth", "smoothing", "not_sounding", "aggregation",
+                "stbc", "fec_coding", "sgi", "noise_floor", "ampdu_cnt",
+                "channel", "secondary_channel", "timestamp", "phy_timestamp",
+                "ant", "sig_len", "rx_state", "real_time_set", "len",
+                "seq_ctrl", "csi_data"
+            ])
             
             for device_id, port in devices:
                 ser = open_serial(port, args.baud)

@@ -128,3 +128,19 @@ python3 collect_multi_csi.py --device STA1:/dev/ttyUSB0 --device STA2:/dev/ttyUS
 ```
 
 
+### CSV format v2
+
+CSI lines are written in comma-separated form. Version 2 replaces the
+previous `local_timestamp` and `real_timestamp` fields with a single
+`timestamp` column and adds `phy_timestamp` which exposes the Wi-Fi
+hardware TSF value. The `timestamp` field reports epoch microseconds once
+the system clock is set. Before that, masters use monotonic microseconds
+since boot and workers use the value from `get_synced_time()`.
+
+The `real_time_set` column now flags whether `timestamp` contains epoch
+time (`1`) or a monotonic/synchronized value (`0`). Downstream tools that
+expected the old `real_timestamp` column should switch to `timestamp` and
+may need to update column indices accordingly.
+
+
+
