@@ -77,7 +77,7 @@ void passive_init() {
 
     // Capture CSI from all WiFi frame types to maximize sample rate
     const wifi_promiscuous_filter_t filt = {
-            .filter_mask = WIFI_PROMIS_FILTER_MASK_ALL
+            .filter_mask = WIFI_PROMIS_FILTER_MASK_DATA
     };
 
     int curChannel = WIFI_CHANNEL;
