@@ -2,6 +2,8 @@
 #define ESP32_CSI_INPUT_COMPONENT_H
 
 #include "csi_component.h"
+#include "sync_component.h"
+#include <sys/time.h>
 
 char input_buffer[256];
 int input_buffer_pointer = 0;
@@ -10,6 +12,11 @@ void _handle_input() {
     if (match_set_timestamp_template(input_buffer)) {
         printf("Setting local time to %s\n", input_buffer);
         time_set(input_buffer);
+#if CONFIG_DEVICE_ROLE_MASTER
+        struct timeval now;
+        gettimeofday(&now, NULL);
+        sync_broadcast_epoch(&now);
+#endif
     } else {
         printf("Unable to handle input %s\n", input_buffer);
     }

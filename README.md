@@ -76,6 +76,14 @@ idf.py -p "$ESPPORT" flash
 Reconfigure and re-flash if you later switch a board between master and worker.
 The default role is **Worker**.
 
+## Setting the system clock
+
+Send a `SETTIME: <seconds>.<micros>` command over the serial port to the master
+device once it has booted. The master applies the timestamp using
+`settimeofday()` and broadcasts the epoch to all workers. After this, the
+`timestamp` column in CSI logs represents Unix microseconds and the
+`real_time_set` flag changes to `1`.
+
 ## Capturing additional frame types
 
 `main/main.cc` configures the ESP32 in promiscuous mode. By default the firmware only listened for data frames, which limited how often CSI callbacks were triggered. The code now enables `WIFI_PROMIS_FILTER_MASK_ALL` so CSI is reported for management and control frames as well. This increases the CSI sampling rate when there is little data traffic on the monitored channel.
