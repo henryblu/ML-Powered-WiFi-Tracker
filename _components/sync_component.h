@@ -7,6 +7,7 @@
 #include "esp_log.h"
 #include <arpa/inet.h>
 #include "time_component.h"
+#include <errno.h>
 #include <string.h>
 #include <inttypes.h>
 
@@ -71,9 +72,9 @@ static inline void sync_broadcast_epoch(const struct timeval *tv)
     msg.type = SYNC_MSG_EPOCH;
     msg.tv_sec = htonll(tv->tv_sec);
     msg.tv_usec = htonl(tv->tv_usec);
-    esp_now_send(sync_peer_mac, (const uint8_t*)&msg, sizeof(msg));
-    ESP_LOGI("SYNC_MASTER", "Broadcast epoch %lld.%06ld",
+    ESP_LOGI("SYNC_MASTER", "Broadcasting epoch %lld.%06ld",
              (long long)tv->tv_sec, (long)tv->tv_usec);
+    esp_now_send(sync_peer_mac, (const uint8_t*)&msg, sizeof(msg));
 }
 
 static inline void sync_master_init(void)
@@ -116,14 +117,18 @@ static void sync_recv_cb(const esp_now_recv_info_t *recv_info, const uint8_t *da
         time_offset = pkt.timestamp_us - local_time;
         ESP_LOGI("SYNC_WORKER", "Received seq %" PRIu32 ", offset=%lld us", pkt.seq, (long long)time_offset);
     } else if (type == SYNC_MSG_EPOCH && len >= sizeof(time_sync_msg_t)) {
+        ESP_LOGI("SYNC_WORKER", "Received SYNC_MSG_EPOCH len=%d", len);
         time_sync_msg_t msg;
         memcpy(&msg, data, sizeof(msg));
         msg.tv_sec = ntohll(msg.tv_sec);
         msg.tv_usec = ntohl(msg.tv_usec);
         struct timeval tv = { .tv_sec = msg.tv_sec, .tv_usec = msg.tv_usec };
-        settimeofday(&tv, NULL);
-        real_time_set = true;
-        ESP_LOGI("SYNC_WORKER", "Epoch set to %lld.%06ld", (long long)msg.tv_sec, (long)msg.tv_usec);
+        if (settimeofday(&tv, NULL) != 0) {
+            ESP_LOGE("SYNC_WORKER", "settimeofday failed: %s", strerror(errno));
+        } else {
+            real_time_set = true;
+            ESP_LOGI("SYNC_WORKER", "Epoch set to %lld.%06ld", (long long)msg.tv_sec, (long)msg.tv_usec);
+        }
     }
 }
 
