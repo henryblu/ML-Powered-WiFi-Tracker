@@ -14,3 +14,5 @@ Findings_1.csv
 data/
 multi_csi.csv
 private/
+.vscode/settings.json
+sdkconfig
