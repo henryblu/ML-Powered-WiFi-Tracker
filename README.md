@@ -142,5 +142,9 @@ time (`1`) or a monotonic/synchronized value (`0`). Downstream tools that
 expected the old `real_timestamp` column should switch to `timestamp` and
 may need to update column indices accordingly.
 
+### simple_nn
+
+Simple neural network that uses CSI, either from one or 2 ESPs, as features, and the measurement location as the label. "simple_nn_multi.ipynb" is for data collected from 2 ESPs, use "collect_multi_csi_nn.py" to collect the data for the neural network. "collect_multi_csi_nn.py" is a derivative from "collect_multi_csi_raw.py" and works similarly. However, collect the CSI data from different locations into seperate CSV files, and modify the "target_mac" parameter to the MAC address that you want to collect CSI from.
+
 
 
