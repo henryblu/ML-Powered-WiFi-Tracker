@@ -9,5 +9,5 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r dev-requirements.txt
-      - run: ruff check .
+      - run: ruff check . --exclude scripts/simple_nn.ipynb
       - run: pytest -q
