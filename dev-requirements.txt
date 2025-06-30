@@ -1,5 +1,5 @@
 numpy
-pyserial-asyncio
+pyserial>=3.5
 pytest
 pytest-asyncio
 mypy

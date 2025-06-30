@@ -146,8 +146,6 @@ def main() -> None:
     args = parse_args()
     opts = env_or_cli(args)
     logging.basicConfig(filename="warnings.log", level=logging.WARNING)
-    if sys.platform.startswith("win"):
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     try:
         asyncio.run(main_async(opts))
     except KeyboardInterrupt:
