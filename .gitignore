@@ -16,3 +16,4 @@ data/
 multi_csi.csv
 private/
 aoa_log*.csv
+scripts/__pycache__/*
