@@ -4,4 +4,5 @@ pytest
 pytest-asyncio
 mypy
 black
+torch
 ruff
