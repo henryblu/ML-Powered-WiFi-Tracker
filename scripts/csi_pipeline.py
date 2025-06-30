@@ -7,8 +7,13 @@ import asyncio
 import contextlib
 import logging
 import os
+import sys
 from dataclasses import dataclass, fields
+from pathlib import Path
 from typing import Optional
+
+# Make sibling modules importable when running as a script
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
 

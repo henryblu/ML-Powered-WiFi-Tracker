@@ -9,5 +9,5 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r dev-requirements.txt
-      - run: ruff .
+      - run: ruff check .
       - run: pytest -q

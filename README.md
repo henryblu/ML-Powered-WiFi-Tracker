@@ -13,13 +13,14 @@ python -m pip install -r dev-requirements.txt
 
 ## Usage
 
-Run the pipeline using the script entry point:
+Run the pipeline from the repository root:
 
 ```bash
 CSI_PIPELINE_QUEUE_SIZE=10000 python scripts/csi_pipeline.py \
   --port-master /dev/ttyUSB0 --port-worker /dev/ttyUSB1 \
   --output aoa.csv
 ```
+No `PYTHONPATH` tweak is required—the script adjusts the path automatically.
 
 Environment variables prefixed with ``CSI_PIPELINE_`` are read first, then
 overridden by CLI options.
