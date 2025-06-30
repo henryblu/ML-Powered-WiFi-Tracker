@@ -7,12 +7,12 @@
 build/
 *.elf
 *.bin
-sdkconfig*
+sdkconfig
+
 Findings_1.csv
 .DS_store
 .vscode/settings.json
 data/
 multi_csi.csv
 private/
-.vscode/settings.json
-sdkconfig
+aoa_log*.csv

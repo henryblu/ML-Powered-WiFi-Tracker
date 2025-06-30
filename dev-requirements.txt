@@ -1,0 +1,7 @@
+numpy
+pyserial-asyncio
+pytest
+pytest-asyncio
+mypy
+black
+ruff
