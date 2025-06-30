@@ -20,6 +20,8 @@ CSI_PIPELINE_QUEUE_SIZE=10000 python scripts/csi_pipeline.py \
   --port-master /dev/ttyUSB0 --port-worker /dev/ttyUSB1 \
   --output aoa.csv
 ```
+On Windows, the script selects ``WindowsSelectorEventLoopPolicy`` automatically
+for compatibility with ``pyserial-asyncio``.
 No `PYTHONPATH` tweak is required—the script adjusts the path automatically.
 
 Environment variables prefixed with ``CSI_PIPELINE_`` are read first, then
