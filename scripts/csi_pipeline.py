@@ -35,6 +35,7 @@ class Settings:
     antenna_distance_m: float = 0.06
     gc_interval: float = 0.01
     match_timeout: float = 1.0
+    match_ts_window_us: Optional[int] = None
     flush_bytes: int = 8192
     calibration: Optional[str] = None
     stats: bool = False
@@ -61,6 +62,7 @@ def env_or_cli(args: argparse.Namespace) -> Settings:
         "baud": args.baud,
         "output": args.output,
         "calibration": args.calibration,
+        "match_ts_window_us": args.ts_window_us,
         "stats": args.stats,
     }
     for k, v in cli_map.items():
@@ -79,6 +81,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--baud", type=int)
     parser.add_argument("--output")
     parser.add_argument("--calibration")
+    parser.add_argument("--ts-window-us", type=int, dest="ts_window_us")
     parser.add_argument("--stats", action="store_true")
     return parser.parse_args()
 
@@ -110,6 +113,7 @@ async def main_async(opts: Settings) -> None:
         pair_queue,
         gc_interval=opts.gc_interval,
         timeout=opts.match_timeout,
+        ts_window=opts.match_ts_window_us,
     )
     cal_vector = load_calibration(opts.calibration)
     estimator = AoAEstimator(
