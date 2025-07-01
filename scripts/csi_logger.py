@@ -37,7 +37,13 @@ class CSILogger:
     async def run(self) -> None:
         try:
             while True:
-                timestamp, mac, seq_ctrl, aoa, iq_m, iq_w = await self.queue_in.get()
+                item = await self.queue_in.get()
+                try:
+                    timestamp, mac, seq_ctrl, aoa, iq_m, iq_w = item
+                except ValueError:
+                    timestamp, mac, seq_ctrl, aoa = item
+                    iq_m = ""
+                    iq_w = ""
                 self.logger.info(
                     f"{timestamp},{mac},{seq_ctrl},{aoa:.2f},{iq_m},{iq_w}"
                 )
