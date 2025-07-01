@@ -57,7 +57,7 @@ class Parser:
         csi_part = csi_part.rstrip("]")
         csi_raw = csi_part.strip()
         fields = prefix.split(",")
-        if len(fields) < 27:
+        if len(fields) < 26:
             return None
         mac = fields[2]
         rssi = int(fields[3])
