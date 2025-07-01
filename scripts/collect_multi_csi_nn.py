@@ -3,9 +3,7 @@ import argparse
 import csv
 import serial
 import threading
-import os
 from typing import List
-import numpy as np
 
 target_mac = "3A:FB:99:B4:E0:FC" # replace with your target device mac
 
@@ -113,7 +111,7 @@ def main() -> None:
         stop_evt.set()
     except PermissionError as e:
         print(f"\nPermission denied: {e}")
-        print(f"Try specifying a different output path or check write permissions")
+        print("Try specifying a different output path or check write permissions")
         stop_evt.set()
     finally:
         for ser in serials:

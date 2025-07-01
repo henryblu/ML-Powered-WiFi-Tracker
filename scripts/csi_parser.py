@@ -17,6 +17,7 @@ class CSIPacket:
     rssi: int
     channel: int
     csi_complex: List[complex]
+    csi_raw: str
     receiver_id: str
 
 
@@ -42,6 +43,11 @@ class Parser:
 
     @staticmethod
     def _parse_line(line: str, receiver_id: str) -> Optional[CSIPacket]:
+        line = line.strip()
+        if not line.startswith("CSI_DATA"):
+            if "," in line:
+                _, rest = line.split(",", 1)
+                line = rest.strip().strip('"')
         if not line.startswith("CSI_DATA"):
             return None
         try:
@@ -49,6 +55,7 @@ class Parser:
         except ValueError:
             return None
         csi_part = csi_part.rstrip("]")
+        csi_raw = csi_part.strip()
         fields = prefix.split(",")
         if len(fields) < 27:
             return None
@@ -59,7 +66,14 @@ class Parser:
         seq_ctrl = int(fields[25])
         csi_complex = Parser._parse_csi(csi_part)
         return CSIPacket(
-            mac, seq_ctrl, timestamp, rssi, channel, csi_complex, receiver_id
+            mac,
+            seq_ctrl,
+            timestamp,
+            rssi,
+            channel,
+            csi_complex,
+            csi_raw,
+            receiver_id,
         )
 
     async def run(self) -> None:

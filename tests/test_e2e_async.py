@@ -38,7 +38,9 @@ async def test_e2e_pipeline():
         t.cancel()
     await asyncio.gather(*tasks, return_exceptions=True)
 
-    ts, mac, seq, aoa = await asyncio.wait_for(result_q.get(), timeout=1)
+    ts, mac, seq, aoa, iq_m, iq_w = await asyncio.wait_for(result_q.get(), timeout=1)
     assert mac == "aa"
     assert seq == 1
     assert aoa == pytest.approx(31, abs=1)
+    assert iq_m == "1 0"
+    assert iq_w == "0 1"

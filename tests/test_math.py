@@ -26,6 +26,7 @@ def test_math_helpers():
         rssi=-30,
         channel=1,
         csi_complex=[1 + 0j],
+        csi_raw="1 0",
         receiver_id="master",
     )
     pkt_w = CSIPacket(
@@ -35,6 +36,7 @@ def test_math_helpers():
         rssi=-30,
         channel=1,
         csi_complex=[0 + 1j],
+        csi_raw="0 1",
         receiver_id="worker",
     )
     estimator = AoAEstimator(None, None)
