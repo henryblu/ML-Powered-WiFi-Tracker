@@ -19,12 +19,16 @@ class PairMatcher:
         queue_out: asyncio.Queue[Tuple[CSIPacket, CSIPacket]],
         gc_interval: float = 0.01,
         timeout: float = 1.0,
+        ts_window: int | None = None,
     ):
         self.queue_in = queue_in
         self.queue_out = queue_out
         self.gc_interval = gc_interval
         self.timeout = timeout
-        self.pending: Dict[Tuple[str, int], Dict[str, tuple[CSIPacket, float]]] = {}
+        self.ts_window = ts_window
+        self.pending: Dict[
+            Tuple[str, int], Dict[str, list[tuple[CSIPacket, float]]]
+        ] = {}
         self.master_count = 0
         self.worker_count = 0
         self.paired = 0
@@ -38,11 +42,16 @@ class PairMatcher:
                 now = time.monotonic()
                 for k in tuple(self.pending):
                     v = self.pending[k]
-                    ts_list = [t for (_, t) in v.values()]
-                    if ts_list and now - min(ts_list) > self.timeout:
-                        logging.warning(f"Pair timeout for {k}")
+                    for role in list(v):
+                        pkt_list = v[role]
+                        while pkt_list and now - pkt_list[0][1] > self.timeout:
+                            logging.warning(f"Pair timeout for {k}")
+                            pkt_list.pop(0)
+                            self.dropped += 1
+                        if not pkt_list:
+                            v.pop(role)
+                    if not v:
                         self.pending.pop(k, None)
-                        self.dropped += 1
         except asyncio.CancelledError:
             pass
 
@@ -54,16 +63,32 @@ class PairMatcher:
                 key = (pkt.mac, pkt.seq_ctrl)
                 now = time.monotonic()
                 entry = self.pending.setdefault(key, {})
-                entry[pkt.receiver_id] = (pkt, now)
+                pkt_list = entry.setdefault(pkt.receiver_id, [])
+                pkt_list.append((pkt, now))
                 if pkt.receiver_id == "master":
                     self.master_count += 1
                 else:
                     self.worker_count += 1
                 if "master" in entry and "worker" in entry:
-                    pair = (entry["master"][0], entry["worker"][0])
-                    self.pending.pop(key, None)
-                    self.paired += 1
-                    await self.queue_out.put(pair)
+                    masters = entry["master"]
+                    workers = entry["worker"]
+                    while masters and workers:
+                        m_pkt, _ = masters[0]
+                        w_pkt, _ = workers[0]
+                        diff = abs(m_pkt.timestamp - w_pkt.timestamp)
+                        if self.ts_window is None or diff <= self.ts_window:
+                            masters.pop(0)
+                            workers.pop(0)
+                            self.paired += 1
+                            await self.queue_out.put((m_pkt, w_pkt))
+                        else:
+                            if m_pkt.timestamp < w_pkt.timestamp:
+                                masters.pop(0)
+                            else:
+                                workers.pop(0)
+                            self.dropped += 1
+                    if not masters and not workers:
+                        self.pending.pop(key, None)
         except asyncio.CancelledError:
             pass
         finally:
