@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import threading
 from typing import Tuple
 
@@ -70,7 +71,9 @@ class SerialReader:
     async def close(self) -> None:
         """Close the serial connection."""
         self._stop.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
         if self._ser and self._ser.is_open:
+            with contextlib.suppress(Exception):
+                self._ser.cancel_read()
             self._ser.close()
+        if self._thread and self._thread.is_alive():
+            await asyncio.to_thread(self._thread.join)
