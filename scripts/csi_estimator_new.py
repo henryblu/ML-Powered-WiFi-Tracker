@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import math
-from typing import Optional, Tuple
+from typing import Tuple
 
 import numpy as np
 
@@ -24,9 +24,9 @@ def get_phase_array(csi_str: str) -> np.ndarray:
     """Extract phase values from raw CSI string data."""
     csi_str = csi_str.strip("[]")
     raw = np.array([int(x) for x in csi_str.split()])
-    I = raw[::2]
-    Q = raw[1::2]
-    return np.angle(I + 1j * Q)
+    I_values = raw[::2]
+    Q_values = raw[1::2]
+    return np.angle(I_values + 1j * Q_values)
 
 
 def asin_clamped(x: float) -> float:
