@@ -137,9 +137,13 @@ async def main_async(opts: Settings) -> None:
             tasks, return_when=asyncio.FIRST_EXCEPTION
         )
     finally:
+        await result_queue.put(None)
         for t in pending:
             t.cancel()
-        await asyncio.gather(*tasks, return_exceptions=True)
+        with contextlib.suppress(asyncio.TimeoutError):
+            await asyncio.wait_for(
+                asyncio.gather(*tasks, return_exceptions=True), timeout=2.0
+            )
         logger.close()
         with contextlib.suppress(Exception):
             await reader_master.close()
