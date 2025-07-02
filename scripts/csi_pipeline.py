@@ -131,15 +131,17 @@ async def main_async(opts: Settings) -> None:
     if opts.stats:
         tasks.append(asyncio.create_task(stats_loop(matcher)))
 
-    done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
-    for t in pending:
-        t.cancel()
-    await asyncio.gather(*pending, return_exceptions=True)
-    logger.close()
-    with contextlib.suppress(Exception):
-        await reader_master.close()
-    with contextlib.suppress(Exception):
-        await reader_worker.close()
+    try:
+        await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
+    finally:
+        for t in tasks:
+            t.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+        logger.close()
+        with contextlib.suppress(Exception):
+            await reader_master.close()
+        with contextlib.suppress(Exception):
+            await reader_worker.close()
 
 
 def main() -> None:
