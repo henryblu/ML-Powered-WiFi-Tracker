@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import threading
 from typing import Tuple
 
@@ -31,7 +32,9 @@ class SerialReader:
     async def start(self) -> None:
         """Open the serial connection and read until cancelled."""
         self._loop = asyncio.get_running_loop()
-        self._ser = serial.serial_for_url(self.port, self.baud, timeout=1)
+        self._ser = serial.serial_for_url(
+            self.port, self.baud, timeout=1, exclusive=True
+        )
         self._thread = threading.Thread(target=self._read_loop, daemon=True)
         self._thread.start()
         try:
@@ -70,7 +73,12 @@ class SerialReader:
     async def close(self) -> None:
         """Close the serial connection."""
         self._stop.set()
-        if self._thread and self._thread.is_alive():
-            self._thread.join()
         if self._ser and self._ser.is_open:
+            with contextlib.suppress(Exception):
+                self._ser.cancel_read()
             self._ser.close()
+        if self._thread and self._thread.is_alive():
+            with contextlib.suppress(asyncio.TimeoutError):
+                await asyncio.wait_for(
+                    asyncio.to_thread(self._thread.join), timeout=2.0
+                )

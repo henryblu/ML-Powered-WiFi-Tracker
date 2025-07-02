@@ -40,6 +40,8 @@ class CSILogger:
         try:
             while True:
                 item = await self.queue_in.get()
+                if item is None:
+                    break
                 try:
                     (
                         timestamp,

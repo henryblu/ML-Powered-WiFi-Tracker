@@ -4,6 +4,11 @@ target-version = ["py310"]
 
 [tool.ruff]
 line-length = 88
-extend-exclude = ["*_examples/*", "scripts/simple_nn.ipynb", "scripts/simple_nn.py"]
+extend-exclude = [
+    "*_examples/*",
+    "scripts/simple_nn.ipynb",
+    "scripts/simple_nn.py",
+    "scripts/simple_nn_multi.ipynb",
+]
 
 
