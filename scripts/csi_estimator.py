@@ -39,7 +39,7 @@ class AoAEstimator:
     def __init__(
         self,
         queue_in: asyncio.Queue[Tuple[CSIPacket, CSIPacket]],
-        queue_out: asyncio.Queue[Tuple[int, str, int, float, str, str]],
+        queue_out: asyncio.Queue[Tuple[int, str, int, float, int, int, str, str]],
         antenna_dist: float = 0.06,
         cal_vector: Optional[np.ndarray] = None,
     ):
@@ -78,6 +78,8 @@ class AoAEstimator:
                         master_pkt.mac,
                         master_pkt.seq_ctrl,
                         aoa,
+                        master_pkt.rssi,
+                        worker_pkt.rssi,
                         master_pkt.csi_raw,
                         worker_pkt.csi_raw,
                     )
