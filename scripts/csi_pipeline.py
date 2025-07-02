@@ -131,10 +131,13 @@ async def main_async(opts: Settings) -> None:
     if opts.stats:
         tasks.append(asyncio.create_task(stats_loop(matcher)))
 
+    pending = list(tasks)
     try:
-        await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
+        _done, pending = await asyncio.wait(
+            tasks, return_when=asyncio.FIRST_EXCEPTION
+        )
     finally:
-        for t in tasks:
+        for t in pending:
             t.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
         logger.close()
