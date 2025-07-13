@@ -43,3 +43,11 @@ pytest -q
 ```
 
 The package adheres to `black` formatting and `ruff` linting.
+
+## nn_exploration
+
+.py
+Streamlined script used to test different NNs and their accuracies with only one run
+
+.ipynb
+Notebook to play with different NNs. Made for easy debugging and iteration.
