@@ -148,3 +148,7 @@ Simple neural network that uses CSI, either from one or 2 ESPs, as features, and
 
 
 
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
