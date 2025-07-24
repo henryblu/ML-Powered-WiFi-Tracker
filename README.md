@@ -66,6 +66,9 @@ python ML_Scripts/NN_RawCSI.py
 
 Notebooks such as `simple_nn.ipynb` can be opened in Jupyter for interactive exploration. Example datasets are provided under `training_data/`.
 
+## 5. Report
+The report summarizing the project findings is available in `/report/WIFI_Source_Tracker.pdf`. It includes a detailed account on the motivation, hardware setup, data collection process, and machine learning results.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
