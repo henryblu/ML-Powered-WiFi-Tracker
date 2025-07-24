@@ -18,3 +18,5 @@ private/
 aoa_log*.csv
 scripts/__pycache__/*
 warnings.log
+sdkconfig.old
+old_training_data/*
