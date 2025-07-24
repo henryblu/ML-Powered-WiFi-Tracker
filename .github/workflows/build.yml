@@ -22,4 +22,4 @@ jobs:
         shell: bash
         run: |
           . "$IDF_PATH/export.sh"
-          idf.py -C test build
+          idf.py -C tests/hardware build

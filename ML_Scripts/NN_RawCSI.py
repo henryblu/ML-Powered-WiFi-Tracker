@@ -4,7 +4,6 @@ import torch
 from torch.utils.data import DataLoader, Dataset
 import torch.nn as nn
 from tqdm import tqdm
-import matplotlib.pyplot as plt
 
 def get_CSI(CSI_RAW): # Function to extract the CSI information from CSV file rows
     string = CSI_RAW
@@ -84,7 +83,7 @@ for comb in combs:
         for feat in datas[0][0]:
             try: 
                 len_feature += len(feat)
-            except:
+            except Exception:
                 len_feature += 1
 
         # Determine how to use the data
@@ -106,7 +105,7 @@ for comb in combs:
                 for j, val in enumerate(data): # one instance/line/rssi+CSI+etc of the location
                     feature = []
                     for f in val: # aoa, rssi etc of one measurement
-                        if type(f) == list:
+                        if isinstance(f, list):
                             for v in f:
                                 feature.append(v)
                         else:
@@ -120,7 +119,7 @@ for comb in combs:
                     feature = []
                     val = data[j]
                     for f in val:
-                        if type(f) == list:
+                        if isinstance(f, list):
                             for v in f:
                                 feature.append(v)
                         else:
@@ -136,7 +135,7 @@ for comb in combs:
                     ind = j%n_data
                     val = data[ind]
                     for f in val: 
-                        if type(f) == list:
+                        if isinstance(f, list):
                             for v in f:
                                 feature.append(v)
                         else:

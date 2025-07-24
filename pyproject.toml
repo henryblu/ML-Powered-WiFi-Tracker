@@ -9,6 +9,7 @@ extend-exclude = [
     "scripts/simple_nn.ipynb",
     "scripts/simple_nn.py",
     "scripts/simple_nn_multi.ipynb",
+    "scripts/nn_exploration.ipynb",
 ]
 
 
