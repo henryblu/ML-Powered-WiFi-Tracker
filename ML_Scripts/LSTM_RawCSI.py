@@ -1,15 +1,10 @@
-import os
 import numpy as np
 import pandas as pd
-import joblib
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset, random_split
+from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import RobustScaler, LabelEncoder
-from sklearn.metrics import accuracy_score, classification_report
-from scipy.stats import skew, kurtosis
-from scipy.signal import welch
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import random
@@ -354,7 +349,6 @@ def train_lstm(X, y):
 # Check sequence similarity
 def check_sequence_similarity(X, y):
     """Check if sequences are too similar"""
-    from sklearn.metrics.pairwise import cosine_similarity
 
     # Flatten sequences for similarity calculation
     X_flat = X.reshape(X.shape[0], -1)
@@ -392,7 +386,7 @@ if __name__ == "__main__":
 
     # Check class balance
     unique, counts = np.unique(y_seq, return_counts=True)
-    print(f"\nClass distribution in sequences:")
+    print("\nClass distribution in sequences:")
     for class_label, count in zip(unique, counts):
         print(f"  Class {class_label}: {count} sequences ({count/len(y_seq)*100:.1f}%)")
 
