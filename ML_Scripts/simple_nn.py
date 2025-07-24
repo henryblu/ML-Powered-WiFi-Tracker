@@ -3,6 +3,8 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 import torch.nn as nn
+import torch.optim as optim
+
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
@@ -145,7 +147,6 @@ class My_NN(nn.Module):
             return output1
 # Initialize the model and other hyperparameters
 my_nn = My_NN()
-import torch.optim as optim
 
 criterion = nn.MSELoss()
 optimizer = optim.SGD(my_nn.parameters(), lr=0.001, momentum=0.9)
