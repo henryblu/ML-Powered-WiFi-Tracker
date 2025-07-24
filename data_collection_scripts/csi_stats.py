@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 
-from scripts.csi_matcher import PairMatcher
+from data_collection_scripts.csi_matcher import PairMatcher
 
 
 async def stats_loop(matcher: PairMatcher) -> None:

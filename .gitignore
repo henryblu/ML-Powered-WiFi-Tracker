@@ -19,4 +19,6 @@ aoa_log*.csv
 scripts/__pycache__/*
 warnings.log
 sdkconfig.old
-old_training_data/*
+old_training_data
+data_collection_scripts/__pycache__
+data_collection_scripts/old

@@ -1,13 +1,13 @@
 import numpy as np
 import pytest
 
-from scripts.csi_estimator import (
+from data_collection_scripts.csi_estimator import (
     asin_clamped,
     wavelength,
     weighted_phase_mean,
     AoAEstimator,
 )
-from scripts.csi_parser import CSIPacket
+from data_collection_scripts.csi_parser import CSIPacket
 
 
 def test_math_helpers():

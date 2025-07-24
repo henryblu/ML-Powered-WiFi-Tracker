@@ -2,9 +2,9 @@ import asyncio
 
 import pytest
 
-from scripts.csi_estimator import AoAEstimator
-from scripts.csi_matcher import PairMatcher
-from scripts.csi_parser import Parser
+from data_collection_scripts.csi_estimator import AoAEstimator
+from data_collection_scripts.csi_matcher import PairMatcher
+from data_collection_scripts.csi_parser import Parser
 
 
 @pytest.mark.asyncio

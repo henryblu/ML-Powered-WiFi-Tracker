@@ -17,12 +17,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
 
-from scripts.csi_reader import SerialReader
-from scripts.csi_parser import Parser
-from scripts.csi_matcher import PairMatcher
-from scripts.csi_estimator import AoAEstimator
-from scripts.csi_logger import CSILogger
-from scripts.csi_stats import stats_loop
+from data_collection_scripts.csi_reader import SerialReader
+from data_collection_scripts.csi_parser import Parser
+from data_collection_scripts.csi_matcher import PairMatcher
+from data_collection_scripts.csi_estimator import AoAEstimator
+from data_collection_scripts.csi_logger import CSILogger
+from data_collection_scripts.csi_stats import stats_loop
 
 
 @dataclass

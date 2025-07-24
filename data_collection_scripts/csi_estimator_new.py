@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Angle-of-Arrival estimation and math helpers."""
+"""Angle-of-Arrival estimation with corrected logic using raw CSI string parsing."""
 from __future__ import annotations
 
 import asyncio
 import logging
 import math
-from typing import Optional, Tuple
+from typing import Tuple
 
 import numpy as np
 
-from scripts.csi_parser import CSIPacket
+from data_collection_scripts.csi_parser import CSIPacket  # Presumed available
 
 
 def wavelength(channel: int) -> float:
@@ -20,16 +20,17 @@ def wavelength(channel: int) -> float:
     return 0.299792458 / freq_ghz
 
 
-def weighted_phase_mean(phases: np.ndarray, weights: np.ndarray) -> float:
-    """Return weighted mean of unwrapped phases."""
-    w_sum = weights.sum()
-    if w_sum == 0:
-        return 0.0
-    return float(np.sum(phases * weights) / w_sum)
+def get_phase_array(csi_str: str) -> np.ndarray:
+    """Extract phase values from raw CSI string data."""
+    csi_str = csi_str.strip("[]")
+    raw = np.array([int(x) for x in csi_str.split()])
+    I_values = raw[::2]
+    Q_values = raw[1::2]
+    return np.angle(I_values + 1j * Q_values)
 
 
 def asin_clamped(x: float) -> float:
-    """Return ``asin(x)`` with ``x`` clamped to [-1, 1]."""
+    """Return asin(x), clamped to [-1, 1]."""
     return math.asin(max(-1.0, min(1.0, x)))
 
 
@@ -41,31 +42,34 @@ class AoAEstimator:
         queue_in: asyncio.Queue[Tuple[CSIPacket, CSIPacket]],
         queue_out: asyncio.Queue[Tuple[int, str, int, float, int, int, str, str]],
         antenna_dist: float = 0.06,
-        cal_vector: Optional[np.ndarray] = None,
     ):
         self.queue_in = queue_in
         self.queue_out = queue_out
-        self.wavelength: Optional[float] = None
         self.antenna_dist = antenna_dist
-        self.cal_vector = cal_vector
 
     def _compute_aoa(self, master_pkt: CSIPacket, worker_pkt: CSIPacket) -> float:
-        m = np.asarray(master_pkt.csi_complex, dtype=np.complex64)
-        w = np.asarray(worker_pkt.csi_complex, dtype=np.complex64)
-        if len(m) == 0 or len(m) != len(w):
-            raise ValueError("CSI length mismatch")
+        """Compute AoA using extracted phase difference from CSI raw strings."""
+        try:
+            phase1 = get_phase_array(master_pkt.csi_raw)
+            phase2 = get_phase_array(worker_pkt.csi_raw)
 
-        if self.wavelength is None:
-            self.wavelength = wavelength(master_pkt.channel)
+            min_len = min(len(phase1), len(phase2))
+            phase1 = phase1[:min_len]
+            phase2 = phase2[:min_len]
 
-        delta = np.angle(w * np.conj(m)).astype(np.float32)
-        unwrapped = np.unwrap(delta)
-        if self.cal_vector is not None and len(self.cal_vector) == len(unwrapped):
-            unwrapped = unwrapped - self.cal_vector
-        weights = np.abs(m) * np.abs(w)
-        phi = weighted_phase_mean(unwrapped, weights)
-        arg = (self.wavelength / (2 * np.pi * self.antenna_dist)) * phi
-        return np.degrees(asin_clamped(float(arg)))
+            phase_diff = np.unwrap(phase2 - phase1)
+            mean_phase_diff = np.mean(phase_diff)
+
+            freq_hz = 2.412e9 + (master_pkt.channel - 1) * 5e6
+            lam = 3e8 / freq_hz  # wavelength in meters
+
+            sin_theta = (lam * mean_phase_diff) / (2 * np.pi * self.antenna_dist)
+            sin_theta = np.clip(sin_theta, -1, 1)
+
+            aoa_rad = np.arcsin(sin_theta)
+            return float(np.degrees(aoa_rad))
+        except Exception as e:
+            raise ValueError(f"Failed AoA computation: {e}")
 
     async def run(self) -> None:
         try:
@@ -84,7 +88,7 @@ class AoAEstimator:
                         worker_pkt.csi_raw,
                     )
                     await self.queue_out.put(result)
-                except Exception as exc:  # pragma: no cover - logging only
+                except Exception as exc:
                     logging.warning(f"AoA computation error: {exc}")
         except asyncio.CancelledError:
             pass

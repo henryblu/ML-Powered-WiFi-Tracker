@@ -7,7 +7,7 @@ import logging
 import time
 from typing import Dict, Tuple
 
-from scripts.csi_parser import CSIPacket
+from data_collection_scripts.csi_parser import CSIPacket
 
 
 class PairMatcher:

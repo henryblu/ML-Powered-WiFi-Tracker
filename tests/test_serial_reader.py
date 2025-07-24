@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from scripts.csi_reader import SerialReader
+from data_collection_scripts.csi_reader import SerialReader
 
 
 @pytest.mark.asyncio

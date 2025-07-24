@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from scripts.csi_parser import Parser, CSIPacket
+from data_collection_scripts.csi_parser import Parser, CSIPacket
 
 
 @pytest.mark.asyncio
