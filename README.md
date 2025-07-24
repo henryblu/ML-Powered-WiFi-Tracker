@@ -35,7 +35,16 @@ If your ESP32 board has two USB-C ports, connect to the **left** port for
 flashing and monitoring. The right port is typically for USB-OTG and does not
 provide the USB-to-serial connection used by `idf.py`. Using the wrong port
 can result in null responces when monitoring the device or trying to pull
-the csi information. 
+the csi information.
+
+## Pre-build steps
+
+Before compiling the firmware or running the Python utilities, install the
+required packages (preferably inside a virtual environment):
+
+```bash
+python -m pip install -r dev-requirements.txt
+```
 
 ## Build and flash
 

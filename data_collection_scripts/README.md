@@ -5,10 +5,10 @@ It reads raw lines from two serial ports, parses frames, pairs matching packets,
 
 ## Setup
 
-Install the runtime dependencies using `dev-requirements.txt`:
+Install the runtime dependencies using `requirements.txt`:
 
 ```bash
-python -m pip install -r dev-requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## Usage

@@ -1,5 +1,4 @@
-numpy
-pyserial>=3.5
+-r requirements.txt
 pytest
 pytest-asyncio
 mypy
